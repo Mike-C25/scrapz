@@ -9,13 +9,12 @@ const db = require("../models")
 router.post("/weather/:zip", function(req, res) {
     var zip = req.params.zip;
     console.log("Setting up location object");
-    console.log(zip);
     var url = "https://weather.com/weather/tenday/l/" + zip;
     axios.get(url).then(function(response) {
         // Then, we load that into cheerio and save it to $ for a shorthand selector
 
         var $ = cheerio.load(response.data);
-        console.log("query");
+
         var locationResult = [];
         var weatherResult = [];
 
@@ -29,10 +28,6 @@ router.post("/weather/:zip", function(req, res) {
         location.city = city;
         location.state = state;
         locationResult.push(location);
-
-
-
-
 
         //Create new Location for collection
         console.log("creating new location document");
@@ -83,19 +78,17 @@ router.post("/weather/:zip", function(req, res) {
                             return db.Location.findOneAndUpdate({ zip: zip }, { $push: { weather: dbWeather._id } }, { new: true });
                         })
                         .then(function(dbUser) {
-                            res.json(dbUser);
+                            console.log(dbUser);
                         })
                         .catch(function(err) {
                             // If an error occurs, send it back to the client
                             res.json(err);
                         });
-
-
                 });
 
             })
             .then(function() {
-                res.send(weatherResult);
+                res.sendStatus(200);
             })
             .catch(function(err) {
                 res.json(err);
@@ -107,25 +100,16 @@ router.post("/weather/:zip", function(req, res) {
 });
 
 router.get("/weather/:zip", function(req, res) {
-    console.log(req.params.zip);
+    // console.log(req.params.zip);
     db.Location
         .find({ zip: req.params.zip })
         .sort({ date: -1 })
         .limit(10)
+        .populate('weather')
         .then(function(dbLocation) {
             // res.json(dbLocation);
-            var dbWeather = dbLocation.weather;
-            var weatherArr = [];
-            dbWeather.forEach(function(id){
-                db.Weather
-                    .find({_id: id})
-                    .then(function(dbWeather){
-                        weatherArr.push(dbWeather);
-                    })
-            })
-        })
-        .then(function(){
-            res.render("home",weatherArr);
+            let weatherObj = { weather: dbLocation[0].weather}
+            res.render("home",weatherObj);
         })
         .catch(function(err) {
             res.json(err);

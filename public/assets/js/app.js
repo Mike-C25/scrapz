@@ -18,21 +18,24 @@
                     method: "POST",
                     url: "/weather/" + zip
                 })
-                .then(function(data) {
+                .done(function(data) {
                     if (data) {
                         console.log('Scrape Success!')
                         $('#zip').val('');
                     }
-                    console.log("Grabbing db Data...")
-                    $.ajax({
-                            method: "GET",
-                            url: "/weather/" + zip
-                        })
-                        .done(function(data){
-                        	if(data){
-                        		console.log(data)
-                        	}
-                        })
+                    console.log("Redirection. You can't see this.")
+                    window.location.href = "/weather/" +zip;
+                    // $.ajax({
+                    //         method: "GET",
+                    //         url: "/weather/" + zip
+                    //     })
+                    //     .done(function(data){
+
+                    //     	if(data){
+                    //     		console.log(data)
+
+                    //     	}
+                    //     })
                 });
 
         } else {

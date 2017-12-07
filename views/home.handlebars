@@ -1,14 +1,9 @@
-<h1>Hi Homepage</h1>
+<h1>Find Weather Quick!</h1>
 
 
 <div class="weather-div">
 	{{#each weather}}
-		<p>{{date}}</p>
-		<p>{{description}}</p>
-		<p>{{temperature}}</p>
-		<p>{{percip}}</p>
-		<p>{{wind}}</p>
-		<p>{{humidity}}</p>
+		{{> main/weather}}
 	{{/each}}
 </div>
 
