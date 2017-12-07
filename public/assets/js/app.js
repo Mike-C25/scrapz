@@ -4,7 +4,39 @@
 
 
 ($(document).ready(function() {
-  // $.get("/weather",function(data){
-  //   console.log(data);
-  // })
+
+    $('.submit-btn').on('click', function() {
+        var zip = $('#zip').val();
+        var isnum = /^\d+$/.test(zip);
+        // console.log(zip, zip.length, isnum);
+
+        //if pass validation
+        if (zip.length === 5 && isnum) {
+            console.log('Requesting Scrape...');
+            console.log(zip);
+            $.ajax({
+                    method: "POST",
+                    url: "/weather/" + zip
+                })
+                .then(function(data) {
+                    if (data) {
+                        console.log('Scrape Success!')
+                        $('#zip').val('');
+                    }
+                    console.log("Grabbing db Data...")
+                    $.ajax({
+                            method: "GET",
+                            url: "/weather/" + zip
+                        })
+                        .done(function(data){
+                        	if(data){
+                        		console.log(data)
+                        	}
+                        })
+                });
+
+        } else {
+            console.log("nah dude put a valid zip code");
+        }
+    });
 }));

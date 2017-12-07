@@ -1,3 +1,4 @@
 module.exports = {
-  City: require("./City")
+  Location: require("./Location"),
+  Weather: require("./Weather")
 };

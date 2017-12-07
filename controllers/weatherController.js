@@ -4,53 +4,133 @@ const router = express.Router();
 const axios = require("axios");
 const cheerio = require("cheerio");
 
-router.get("/weather", function(req, res) {
-    // var zip = req.params.zip;
-    axios.get("https://weather.com/weather/tenday/l/08807:4:US").then(function(response) {
+const db = require("../models")
+
+router.post("/weather/:zip", function(req, res) {
+    var zip = req.params.zip;
+    console.log("Setting up location object");
+    console.log(zip);
+    var url = "https://weather.com/weather/tenday/l/" + zip;
+    axios.get(url).then(function(response) {
         // Then, we load that into cheerio and save it to $ for a shorthand selector
+
         var $ = cheerio.load(response.data);
-        // Now, we grab every h2 within an article tag, and do the following:
-        var result = [];
+        console.log("query");
+        var locationResult = [];
+        var weatherResult = [];
 
-        $("tbody tr").each(function(i, element) {
-            var city = {};
+        var location = {};
+        var loc = $(".locations-title h1").text();
 
-            // console.log($(this).children());
+        var city = loc.split(",")[0];
+        var state = loc.split(",")[1].split(" ")[1];
 
-            city.date = $(this)
-                .find(".day-detail")
-                .text();
+        location.zip = zip;
+        location.city = city;
+        location.state = state;
+        locationResult.push(location);
 
-            city.description = $(this)
-                .find(".description span")
-                .text();
 
-            city.temperature = $(this)
-                .find(".temp div span")
-                .text()
-                .replace('°', '° ');
 
-            city.precip = $(this)
-                .find(".precip div span:nth-child(2) span")
-                .text()
-                .replace('%','');;
 
-            city.wind = $(this)
-                .find(".wind span")
-                .text();
 
-            city.humidity = $(this)
-                .find(".humidity span span")
-                .text()
-                .replace('%', '');
+        //Create new Location for collection
+        console.log("creating new location document");
+        db.Location
+            .create(locationResult)
+            .then(function(dbLocation) {
+                // res.send("Attempting to push data into City Doc")
+                res.sendStatus(200);
+                console.log("Completed scrape and created Location Doc")
+            })
+            .then(function() {
 
-            result.push(city);
-        });
+                $("tbody tr").each(function(i, element) {
+                    var weather = {};
 
-        res.json(result);
+                    weather.date = $(this)
+                        .find(".day-detail")
+                        .text();
+
+                    weather.description = $(this)
+                        .find(".description span")
+                        .text();
+
+                    weather.temperature = $(this)
+                        .find(".temp div span")
+                        .text()
+                        .replace('°', '° ');
+
+                    weather.precip = $(this)
+                        .find(".precip div span:nth-child(2) span")
+                        .text()
+                        .replace('%', '');;
+
+                    weather.wind = $(this)
+                        .find(".wind span")
+                        .text();
+
+                    weather.humidity = $(this)
+                        .find(".humidity span span")
+                        .text()
+                        .replace('%', '');
+                    db.Weather
+                        .create(weather)
+                        .then(function(dbWeather) {
+                            console.log(dbWeather);
+                            // loop over dbWeather and push all _id's into new array
+                            // const idsArray = dbWeather.map(weather => weather._id);
+                            return db.Location.findOneAndUpdate({ zip: zip }, { $push: { weather: dbWeather._id } }, { new: true });
+                        })
+                        .then(function(dbUser) {
+                            res.json(dbUser);
+                        })
+                        .catch(function(err) {
+                            // If an error occurs, send it back to the client
+                            res.json(err);
+                        });
+
+
+                });
+
+            })
+            .then(function() {
+                res.send(weatherResult);
+            })
+            .catch(function(err) {
+                res.json(err);
+            });
+
+
 
     });
 });
+
+router.get("/weather/:zip", function(req, res) {
+    console.log(req.params.zip);
+    db.Location
+        .find({ zip: req.params.zip })
+        .sort({ date: -1 })
+        .limit(10)
+        .then(function(dbLocation) {
+            // res.json(dbLocation);
+            var dbWeather = dbLocation.weather;
+            var weatherArr = [];
+            dbWeather.forEach(function(id){
+                db.Weather
+                    .find({_id: id})
+                    .then(function(dbWeather){
+                        weatherArr.push(dbWeather);
+                    })
+            })
+        })
+        .then(function(){
+            res.render("home",weatherArr);
+        })
+        .catch(function(err) {
+            res.json(err);
+        })
+})
 
 
 module.exports = router;

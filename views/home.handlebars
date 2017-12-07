@@ -1,1 +1,16 @@
 <h1>Hi Homepage</h1>
+
+
+<div class="weather-div">
+	{{#each weather}}
+		<p>{{date}}</p>
+		<p>{{description}}</p>
+		<p>{{temperature}}</p>
+		<p>{{percip}}</p>
+		<p>{{wind}}</p>
+		<p>{{humidity}}</p>
+	{{/each}}
+</div>
+
+<input id="zip" type="text" name="zipcode">
+<div class="submit-btn">Search</div>
