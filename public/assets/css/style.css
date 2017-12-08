@@ -1,43 +1,48 @@
-.weather-container{
-	width: 75%;
-	display: inline-block;
-	margin: 0px auto;
+.weather-container {
+    width: 75%;
+    display: inline-block;
+    margin: 0px auto;
 }
 
-.day-block{
-	margin: 0px auto;
-	margin-top: 20px;
-	margin-bottom: 20px;
+.day-block {
+    margin: 0px auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
-.day-block p{
-	display: inline-block;
+.day-block p {
+    display: inline-block;
 }
 
-.block{
-	
+.block {
+    display: inline-block;
+    margin: 0px auto;
+    padding: 10px 15px;
+    border-left: 1px solid #cdcdcd;
+}
+.block:first-child{
+	border-left: none;
 }
 
-.search-container{
-	width: 25%;
-	display: inline-block;
-	position: absolute;
-	top: 10%;
-	right: 5%;
-	text-align: center;
+.search-container {
+    width: 25%;
+    display: inline-block;
+    position: absolute;
+    top: 10%;
+    right: 5%;
+    text-align: center;
 }
 
-#zip{
-	height: 15px;
-	width: 75%;
-	margin: 0px auto;
+#zip {
+    height: 15px;
+    width: 75%;
+    margin: 0px auto;
 }
 
-.submit-btn{
-	border: 1px solid #cdcdcd;
-	padding: 5px;
-	margin: 0px auto;
-	margin-top: 20px;
-	width: 50px;
-
+.submit-btn {
+    border: 1px solid #cdcdcd;
+    padding: 5px;
+    margin: 0px auto;
+    margin-top: 20px;
+    width: 50px;
 }
