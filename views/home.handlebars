@@ -1,11 +1,13 @@
 <h1>Find Weather Quick!</h1>
 
 
-<div class="weather-div">
+<div class="weather-container">
 	{{#each weather}}
 		{{> main/weather}}
 	{{/each}}
 </div>
 
-<input id="zip" type="text" name="zipcode">
-<div class="submit-btn">Search</div>
+<div class="search-container">
+	<input id="zip" type="text" name="zipcode">
+	<div class="submit-btn">Search</div>
+</div>

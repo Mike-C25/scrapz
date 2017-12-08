@@ -1,0 +1,43 @@
+.weather-container{
+	width: 75%;
+	display: inline-block;
+	margin: 0px auto;
+}
+
+.day-block{
+	margin: 0px auto;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.day-block p{
+	display: inline-block;
+}
+
+.block{
+	
+}
+
+.search-container{
+	width: 25%;
+	display: inline-block;
+	position: absolute;
+	top: 10%;
+	right: 5%;
+	text-align: center;
+}
+
+#zip{
+	height: 15px;
+	width: 75%;
+	margin: 0px auto;
+}
+
+.submit-btn{
+	border: 1px solid #cdcdcd;
+	padding: 5px;
+	margin: 0px auto;
+	margin-top: 20px;
+	width: 50px;
+
+}
