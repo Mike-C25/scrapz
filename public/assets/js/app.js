@@ -19,12 +19,14 @@
                     url: "/weather/" + zip
                 })
                 .done(function(data) {
+                    console.log(data);
                     if (data) {
                         console.log('Scrape Success!')
+
                         $('#zip').val('');
                     }
                     console.log("Redirection. You can't see this.")
-                    window.location.href = "/weather/" +zip;
+                    window.location.href = "/weather/" + zip;
                     // $.ajax({
                     //         method: "GET",
                     //         url: "/weather/" + zip

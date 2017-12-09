@@ -13,7 +13,7 @@ let WeatherSchema = new Schema({
     temperature: {
         type: String
     },
-    percip: {
+    precip: {
         type: String
     },
     wind: {

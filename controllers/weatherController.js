@@ -72,7 +72,7 @@ router.post("/weather/:zip", function(req, res) {
                     db.Weather
                         .create(weather)
                         .then(function(dbWeather) {
-                            // console.log(dbWeather);
+                            console.log(dbWeather);
                             // loop over dbWeather and push all _id's into new array
                             // const idsArray = dbWeather.map(weather => weather._id);
                             return db.Location.findOneAndUpdate({ zip: zip }, { $push: { weather: dbWeather._id } }, { new: true });
