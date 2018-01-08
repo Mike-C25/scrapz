@@ -4,6 +4,11 @@
 
 
 ($(document).ready(function() {
+    let resultLen = $(".day-block").length;
+
+    if (resultLen > 10) {
+        $('.congrats').css('display', 'block');
+    }
 
     $('.submit-btn').on('click', function() {
         var zip = $('#zip').val();
@@ -33,10 +38,10 @@
                     //     })
                     //     .done(function(data){
 
-                    //     	if(data){
-                    //     		console.log(data)
+                    //      if(data){
+                    //          console.log(data)
 
-                    //     	}
+                    //      }
                     //     })
                 });
 

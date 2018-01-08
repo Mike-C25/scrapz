@@ -1,7 +1,16 @@
 <h1>Find Weather Quick!</h1>
-
+<div class="sun-img"></div>
 
 <div class="weather-container">
+<div class="day-header">
+	<div class="block">Day</div>
+	<div class="block">Description</div>
+	<div class="block">Temperature</div>
+	<div class="block">Preciptiation</div>
+	<div class="block">Wind</div>
+	<div class="block">Humidity</div>
+
+</div>
 	{{#each weather}}
 		{{> main/weather}}
 	{{/each}}
@@ -13,4 +22,5 @@
 	</div>
 	<input id="zip" type="text" name="zipcode">
 	<div class="submit-btn">Search</div>
+	<div class="congrats shake shake-constant"></div>
 </div>
